@@ -5,10 +5,46 @@ describe Hand do
 
     context "it's a straight flush" do
         
-        it "gets straight flush" do
-            cards = %w(10H 3S 6C KH QS)
+        it "gets two separate consecutive cards" do
+            cards = %w(10H JH 6C 3H 4H)
             hand = Hand.new(cards)
-            expect(hand.get_straight_flush).to eq("KH")
+            expect(hand.get_number_of_consecutive_card).to eq([["10H", "JH"], ["3H", "4H"]])
+        end
+
+        it "gets two consecutive cards at the beginning" do
+            cards = %w(AS 2S 6C JD 4H)
+            hand = Hand.new(cards)
+            expect(hand.get_number_of_consecutive_card).to eq([["AS", "2S"]])
+        end
+
+        it "gets two consecutive cards at the end" do
+            cards = %w(KS 2S 6C JD QD)
+            hand = Hand.new(cards)
+            expect(hand.get_number_of_consecutive_card).to eq([["JD", "QD"]])
+        end
+
+        it "gets two consecutive cards at the center" do
+            cards = %w(KS 2S 3S AD QD)
+            hand = Hand.new(cards)
+            expect(hand.get_number_of_consecutive_card).to eq([["2S", "3S"]])
+        end
+
+        it "gets three consecutive cards at the beginning" do
+            cards = %w(AS 2S 3S JD 4H)
+            hand = Hand.new(cards)
+            expect(hand.get_number_of_consecutive_card).to eq([["AS", "2S", "3S"]])
+        end
+
+        it "gets three consecutive cards at the end" do
+            cards = %w(AD 6C 3C 4C 5C)
+            hand = Hand.new(cards)
+            expect(hand.get_number_of_consecutive_card).to eq([["3C", "4C", "5C"]])
+        end
+
+        it "gets three consecutive cards at the center" do
+            cards = %w(AD 2C 3C 4C 9S)
+            hand = Hand.new(cards)
+            expect(hand.get_number_of_consecutive_card).to eq([["2C", "3C", "4C"]])
         end
     end
     
