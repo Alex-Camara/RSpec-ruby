@@ -1,5 +1,5 @@
 require_relative './lib/Hand'
 
-hand = Hand.new(%w(10H 10H 3S 3C QS))
+hand = Hand.new(%w(AS 2S 3S 4S 5S))
 
-puts hand.get_pairs.inspect
+puts hand.get_straight_flush.inspect

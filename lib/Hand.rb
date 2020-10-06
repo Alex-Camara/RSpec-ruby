@@ -6,11 +6,64 @@ class Hand
     end
 
     def get_straight_flush
-        sorted_cards = sort_cards
+        consecutive_cards = get_number_of_consecutive_card
+        return consecutive_cards[0] unless consecutive_cards[0].length < 5
     end
 
-    def get_number_of_contiguous_card(cards)
+    # @return gets an array of arrays containing al the groups of cards being consecutive
+    def get_number_of_consecutive_card
+        total_contiguous_cards = Array.new
+        contiguous_cards = Array.new
+        
+        @cards.each_with_index do |card, index|
 
+            # if the array is empty, it's the first round, we add the card
+            if contiguous_cards.empty? 
+                contiguous_cards.push(card)
+
+            # if the corresponding index in the current card minus the index currently last in the 
+            # contiguous_cards array equals -1, they are consecutive and thus, added to the contiguous_cards
+            # array
+            elsif are_cards_consecutive?(contiguous_cards.last, card)
+                if index == @cards.length - 1
+                    contiguous_cards.push(card)
+                    total_contiguous_cards.push(contiguous_cards)
+                elsif
+                    contiguous_cards.push(card)
+                end
+                
+            # if the contiguous_cards array has more than one card and the current card is not consecutive
+            # then we add the contiguous_cards to the total_contiguous_cards and clear the 
+            # contiguous_cards array. Finally we add the current card to the contiguous_cards array
+            elsif contiguous_cards.length > 1 
+                total_contiguous_cards.push(contiguous_cards)
+                contiguous_cards = []
+                contiguous_cards.push(card)
+            else
+                contiguous_cards = []
+                contiguous_cards.push(card)
+            end 
+        end
+
+        return total_contiguous_cards
+    end
+
+    # @param previous_card the card to compare to
+    # @param current_card the card being compared
+    # @return whether or not the current card value follows the previous card
+    def are_cards_consecutive?(previous_card, current_card)
+        previous_card_index = get_ordered_cards_index(previous_card)
+        current_card_index = get_ordered_cards_index(current_card)
+
+        have_same_index = (previous_card_index - current_card_index) == -1
+        have_same_suit = current_card[-1] == previous_card[-1]
+
+        return have_same_index & have_same_suit
+    end
+
+    def get_ordered_cards_index(card)
+        ordered_cards = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"]
+        correponding_index = ordered_cards.find_index { |ordered_card| ordered_card == card[0...-1]}
     end
 
     def get_pairs
