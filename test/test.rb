@@ -3,7 +3,7 @@ require_relative '../lib/Hand'
 
 describe Hand do 
 
-    context "it's a straight flush" do
+    context "get consecutive cards" do
         
         it "gets two separate consecutive cards" do
             cards = %w(10H JH 6C 3H 4H)
@@ -48,6 +48,25 @@ describe Hand do
         end
     end
     
+    context "get consecutive cards" do
+        it "gets a minimal straight flush" do
+            cards = %w(AH 2H 3H 4H 5H)
+            hand = Hand.new(cards)
+            expect(hand.get_straight_flush).to eq(["AH", "2H", "3H", "4H", "5H"])
+        end
+
+        it "gets a maximal straight flush" do
+            cards = %w(9S 10S JS QS KS)
+            hand = Hand.new(cards)
+            expect(hand.get_straight_flush).to eq(["9S", "10S", "JS", "QS", "KS"])
+        end
+
+        it "does not get a straight flush" do
+            cards = %w(9S 10H JS QS KS)
+            hand = Hand.new(cards)
+            expect(hand.get_straight_flush).to eq(nil)
+        end
+    end
     # context "it's a tie" do
     #     it "gets highest card" do
     #         cards = %w(10H 3S 6C KH QS)
