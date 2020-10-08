@@ -8,47 +8,47 @@ describe Hand do
         it "gets two separate consecutive cards" do
             cards = %w(10H JH 6C 3H 4H)
             hand = Hand.new(cards)
-            expect(hand.get_number_of_consecutive_card).to eq([["10H", "JH"], ["3H", "4H"]])
+            expect(hand.get_consecutive_and_not_consecutive_cards).to eq({:consecutive_cards=>[["10H", "JH"], ["3H", "4H"]], :non_consecutive_cards=>["6C"]})
         end
 
         it "gets two consecutive cards at the beginning" do
             cards = %w(AS 2S 6C JD 4H)
             hand = Hand.new(cards)
-            expect(hand.get_number_of_consecutive_card).to eq([["AS", "2S"]])
+            expect(hand.get_consecutive_and_not_consecutive_cards).to eq({:consecutive_cards=>[["AS", "2S"]], :non_consecutive_cards=>["6C", "JD", "4H"]})
         end
 
         it "gets two consecutive cards at the end" do
             cards = %w(KS 2S 6C JD QD)
             hand = Hand.new(cards)
-            expect(hand.get_number_of_consecutive_card).to eq([["JD", "QD"]])
+            expect(hand.get_consecutive_and_not_consecutive_cards).to eq({:consecutive_cards=>[["JD", "QD"]], :non_consecutive_cards=>["KS", "2S", "6C"]})
         end
 
         it "gets two consecutive cards at the center" do
             cards = %w(KS 2S 3S AD QD)
             hand = Hand.new(cards)
-            expect(hand.get_number_of_consecutive_card).to eq([["2S", "3S"]])
+            expect(hand.get_consecutive_and_not_consecutive_cards).to eq({:consecutive_cards=>[["2S", "3S"]], :non_consecutive_cards=>["KS", "AD", "QD"]})
         end
 
         it "gets three consecutive cards at the beginning" do
             cards = %w(AS 2S 3S JD 4H)
             hand = Hand.new(cards)
-            expect(hand.get_number_of_consecutive_card).to eq([["AS", "2S", "3S"]])
+            expect(hand.get_consecutive_and_not_consecutive_cards).to eq({:consecutive_cards=>[["AS", "2S", "3S"]], :non_consecutive_cards=>["JD", "4H"]})
         end
 
         it "gets three consecutive cards at the end" do
             cards = %w(AD 6C 3C 4C 5C)
             hand = Hand.new(cards)
-            expect(hand.get_number_of_consecutive_card).to eq([["3C", "4C", "5C"]])
+            expect(hand.get_consecutive_and_not_consecutive_cards).to eq({:consecutive_cards=>[["3C", "4C", "5C"]], :non_consecutive_cards=>["AD", "6C"]})
         end
 
         it "gets three consecutive cards at the center" do
             cards = %w(AD 2C 3C 4C 9S)
             hand = Hand.new(cards)
-            expect(hand.get_number_of_consecutive_card).to eq([["2C", "3C", "4C"]])
+            expect(hand.get_consecutive_and_not_consecutive_cards).to eq({:consecutive_cards=>[["2C", "3C", "4C"]], :non_consecutive_cards=>["AD", "9S"]})
         end
     end
     
-    context "get consecutive cards" do
+    context "checking straight flush" do
         it "gets a minimal straight flush" do
             cards = %w(AH 2H 3H 4H 5H)
             hand = Hand.new(cards)
