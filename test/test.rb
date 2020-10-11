@@ -47,6 +47,20 @@ describe Hand do
             expect(hand.get_consecutive_and_not_consecutive_cards).to eq({:consecutive_cards=>[["2C", "3C", "4C"]], :non_consecutive_cards=>["AD", "9S"]})
         end
     end
+
+    context "get sets of cards with same number" do
+        it "gets two pairs" do
+            cards = %w(AH 2H 10D AD 2S)
+            hand = Hand.new(cards)
+            expect(hand.get_grouped_cards_by_same_number).to eq({:pairs=>[["2H", "2S"],["AH", "AD"]], :non_pairs=>["10D"]})
+        end
+
+        it "gets groups with three and two" do
+            cards = %w(10H 2H 10D 2D 2S)
+            hand = Hand.new(cards)
+            expect(hand.get_grouped_cards_by_same_number).to eq({:pairs=>[["2H", "2D", "2S"],["10H", "10D"]], :non_pairs=>[]})
+        end
+    end
     
     context "checking straight flush" do
         it "gets a minimal straight flush" do
@@ -65,6 +79,46 @@ describe Hand do
             cards = %w(9S 10H JS QS KS)
             hand = Hand.new(cards)
             expect(hand.get_straight_flush).to eq(nil)
+        end
+    end
+
+    context "checking four of a kind" do
+        it "is four of a kind at the beginning, same suits" do
+            cards = %w(2S 2S 2S 2S 10H)
+            hand = Hand.new(cards)
+            expect(hand.is_four_of_a_kind?).to eq(true)
+        end
+
+        it "is four of a kind at the beginning, different suits" do
+            cards = %w(6S 6H 6D 6C 10H)
+            hand = Hand.new(cards)
+            expect(hand.is_four_of_a_kind?).to eq(true)
+        end
+
+        it "is four of a kind at the end, different suits" do
+            cards = %w(10D 2H 2S 2S 2D)
+            hand = Hand.new(cards)
+            expect(hand.is_four_of_a_kind?).to eq(true)
+        end
+
+        it "is not a four of a kind" do
+            cards = %w(10D 2S 3S 6S 2S)
+            hand = Hand.new(cards)
+            expect(hand.is_four_of_a_kind?).to eq(false)
+        end
+    end
+
+    context "checking full house" do
+        it "is full house" do
+            cards = %w(10S 10H KC KH KS)
+            hand = Hand.new(cards)
+            expect(hand.is_full_house?).to eq(true)
+        end
+
+        it "is not full house" do
+            cards = %w(10S JH KC KH KS)
+            hand = Hand.new(cards)
+            expect(hand.is_full_house?).to eq(false)
         end
     end
     # context "it's a tie" do

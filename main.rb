@@ -1,5 +1,5 @@
 require_relative './lib/Hand'
 
-hand = Hand.new(%w(AS 2S 3S 4S 5S))
+hand = Hand.new(%w(10S 10H KC KH KS))
 
-puts hand.get_straight_flush.inspect
+puts hand.is_full_house?.inspect
